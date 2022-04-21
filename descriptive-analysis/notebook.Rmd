@@ -1,0 +1,79 @@
+---
+title: "Descriptive Analysis"
+output:
+  html_notebook:
+    code_folding: show
+    fig_caption: yes
+    theme: united
+    toc: yes
+---
+
+## MASS Cats' summary
+
+```{r}
+library(MASS)
+data(cats, package = "MASS")
+View(cats)
+str(cats)
+```
+
+```{r}
+summary(cats)
+```
+
+```{r}
+hist(cats$Hwt)
+```
+
+```{r}
+boxplot(cats$Hwt)
+```
+
+```{r}
+library(ggplot2)
+ggplot(cats, aes(sample = Hwt)) + stat_qq() + stat_qq_line()
+```
+
+## Shapiro-Wilk normality test
+
+```{r}
+?shapiro.test
+```
+
+```{r}
+shapiro.test(rnorm(n = 100, mean = 0, sd = 1))
+```
+
+```{r}
+shapiro.test(runif(100, min = 1, max = 10))
+```
+
+```{r}
+shapiro.test(runif(3, min = 1, max = 10))
+```
+
+```{r}
+shapiro.test(cats$Hwt)
+```
+
+## Laptop Prices' summary
+
+[https://www.kaggle.com/ionaskel/laptop-prices](https://www.kaggle.com/ionaskel/laptop-prices)
+
+```{r}
+df = read.csv("laptops.csv")
+summary(df$Price_euros)
+```
+
+```{r}
+boxplot(df$Price_euros)
+```
+
+```{r}
+library(moments)
+skewness(df$Price_euros)
+```
+
+```{r}
+shapiro.test(df$Price_euros)
+```
