@@ -1,0 +1,93 @@
+---
+title: "Regression Analysis"
+output:
+  html_notebook:
+    code_folding: show
+    fig_caption: yes
+    theme: united
+    toc: yes
+---
+
+## Airquality: New York Air Quality Measurements
+
+[https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/airquality](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/airquality)
+
+```{r}
+head(airquality)
+```
+
+```{r}
+summary(airquality)
+```
+
+```{r}
+df <- na.omit(airquality)
+summary(df)
+```
+
+```{r}
+plot(df$Temp, df$Ozone, xlab = "Temperature", ylab = "Ozone")
+```
+
+Assumption:
+```
+y = exp(a + b * x)
+```
+
+x', y' transformation:
+```
+log(y) = log(exp(a + b*x))
+log(y) = a + b*x
+```
+
+## Fitting linear model
+
+```{r}
+df$LogOzone <- log(df$Ozone)
+```
+
+```{r}
+linModel <- lm(formula = df$LogOzone ~ df$Temp)
+linModel
+```
+
+```{r}
+summary(linModel)
+```
+
+```{r}
+linModel$coefficients
+```
+
+## Nonlinear Least Squares
+
+```{r}
+ozone <- df$Ozone
+temp <- df$Temp
+a <- linModel$coefficients[1]
+b <- linModel$coefficients[2]
+model <- nls(ozone ~ exp(a + b*temp), start = list(a=a, b=b))
+summary(model)
+```
+
+```{r}
+plot(ozone ~ temp)
+curve(exp(coef(model)["a"] + coef(model)["b"] * x), add = T, col = "red")
+```
+
+```{r}
+plot(ozone, predict(model), xlab="True Ozone", "ylab" = "Ozone Forecast")
+abline(c(0, 1), col="red")
+```
+
+```{r}
+resid <- residuals(model)
+pred <- predict(model)
+plot(pred, resid)
+abline(0, 0, col="red")
+```
+
+```{r}
+qqnorm(resid)
+qqline(resid, col="red")
+```
