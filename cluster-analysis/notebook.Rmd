@@ -1,0 +1,105 @@
+---
+title: "Cluster Analysis"
+output:
+  html_notebook:
+    code_folding: show
+    fig_caption: yes
+    theme: united
+    toc: yes
+---
+
+## Violent Crime Rates by US State dataset summary
+
+[https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/USArrests](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/USArrests)
+
+<!----
+brew install cmake
+brew install nlopt
+-->
+```{r, message=FALSE}
+library(cluster)
+library(ggplot2)
+library(factoextra)
+library(GGally)
+library(fossil)
+```
+
+```{r}
+head(USArrests)
+```
+
+```{r}
+summary(USArrests)
+```
+
+```{r}
+df <- scale(USArrests)
+summary(df)
+```
+
+```{r}
+dist(df, method = "euclidean")
+```
+
+## Hierarchical Clustering
+
+```{r}
+wardhclust <- hclust(dist(df, method = "euclidean"), method = "ward.D2")
+plot(wardhclust)
+```
+
+```{r}
+fviz_dend(wardhclust, k = 4, rect = TRUE)
+```
+
+```{r}
+completehclust <- hclust(dist(df, method = "euclidean"), method = "complete")
+plot(completehclust)
+```
+
+```{r}
+fviz_dend(completehclust, k = 4, rect = TRUE)
+```
+
+## K-Means Clustering
+
+```{r}
+fviz_nbclust(df, kmeans, method = "wss") + geom_vline(xintercept = 4, linetype = 2) + geom_vline(xintercept = 2, linetype = 2)
+```
+
+```{r}
+fviz_nbclust(df, kmeans, method = "silhouette")
+```
+
+```{r}
+kmeans(df, 4)
+```
+
+```{r}
+fviz_cluster(kmeans(df, 4), data = df, ellipse.type = "euclid",  star.plot = TRUE, repel = TRUE)
+```
+
+## Principal Components Analysis
+
+
+```{r}
+ggpairs(USArrests)
+```
+
+```{r}
+prcomp(df, center=TRUE)
+```
+
+```{r}
+summary(prcomp(df, center=TRUE))
+```
+
+```{r}
+fviz_eig(prcomp(df, center=TRUE), addlabels = TRUE)
+```
+
+## Rand Index and Adjusted Rand Index
+
+```{r}
+rand.index(cutree(wardhclust, k = 4), kmeans(df, 4)$cluster)
+```

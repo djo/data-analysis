@@ -10,6 +10,7 @@ Notebooks:
 1. [Regression analysis](https://djo.github.io/data-analysis/regression-analysis)
 1. [Dispersion analysis](https://djo.github.io/data-analysis/dispersion-analysis)
 1. [Time series analysis](https://djo.github.io/data-analysis/time-series-analysis)
+1. [Cluster analysis](https://djo.github.io/data-analysis/cluster-analysis)
 
 MIT License
 
