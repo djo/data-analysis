@@ -1,0 +1,112 @@
+---
+title: "Time Series Analysis"
+output:
+  html_notebook:
+    code_folding: show
+    fig_caption: yes
+    theme: united
+    toc: yes
+---
+
+## Australian monthly gas production dataset summary
+
+[https://rdrr.io/cran/forecast/man/gas.html](https://rdrr.io/cran/forecast/man/gas.html)
+
+Australian monthly gas production: 1956–1995.
+
+```{r}
+library(forecast)
+library(TTR)
+library(tseries)
+```
+
+```{r}
+data(gas, package='forecast')
+```
+
+```{r}
+head(gas)
+```
+
+```{r}
+summary(gas)
+```
+
+```{r}
+plot.ts(gas, xlab="Time", ylab="Gas production")
+```
+
+```{r}
+ggseasonplot(gas)
+```
+
+```{r}
+plot.ts(log(gas), xlab="Time", ylab="Gas production")
+```
+
+```{r}
+plot.ts(SMA(log(gas), n = 50), xlab="Time", ylab="Gas production")
+```
+
+```{r}
+plot(decompose(log(gas)))
+```
+
+## Auto- and Cross- Covariance and -Correlation Function Estimation
+
+```{r}
+acf(log(gas))
+```
+
+```{r}
+pacf(log(gas))
+```
+
+## Holt-Winters Filtering
+
+```{r}
+hw1 <- HoltWinters(log(gas))
+hw1
+```
+
+```{r}
+plot(hw1)
+```
+
+```{r}
+hw2 <- forecast:::forecast.HoltWinters(hw1, h = 50)
+plot(hw2)
+```
+
+## Augmented Dickey-Fuller Test
+
+```{r}
+adf.test(log(gas))
+```
+
+```{r}
+plot(diff(log(gas)))
+```
+
+```{r}
+plot(diff(diff(log(gas))))
+```
+
+## ARIMA model
+
+```{r}
+fit <- auto.arima(log(gas), stationary = FALSE)
+autoplot(forecast(fit, level = c(95), h = 50))
+```
+
+```{r}
+acf(fit$residuals)
+```
+
+```{r}
+Box.test(fit$residuals, type="Ljung-Box")
+```
+
+```{r}
+checkresiduals(fit, test=FALSE)
+```
