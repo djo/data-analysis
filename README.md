@@ -6,7 +6,8 @@ Notebooks:
 
 1. [Introduction into R](https://djo.github.io/data-analysis/introduction-into-r)
 1. [Descriptive analysis](https://djo.github.io/data-analysis/descriptive-analysis)
+1. [Correlation analysis](https://djo.github.io/data-analysis/correlation-analysis)
 
 MIT License
 
-Copyright (c) 2022 Andrii Dzhoha
+Copyright (c) 2021 Andrii Dzhoha
