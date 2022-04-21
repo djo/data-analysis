@@ -1,0 +1,159 @@
+---
+title: "Introduction into R"
+output:
+  html_notebook:
+    code_folding: show
+    fig_caption: yes
+    theme: united
+    toc: yes
+---
+
+## Variables
+
+```{r}
+# variable assignment is done by "<-" (or in some cases by "=")
+age <- 42
+# all variables are mutable
+age <- 21
+age <- age + 1
+# R has the dynamic typing discipline
+age <- "2"
+```
+
+## Operations
+
+```{r}
+# help
+?abs
+??sqrt
+
+# raise to power
+2**3
+2^3
+
+# operator precedence, the use of parentheses
+2^(3+1)
+
+x <- 2
+exp(x)
+log(x)
+?log
+log10(100)
+
+
+# logical operations
+x >= 3
+x == 2
+x != 2
+x != 2 | TRUE
+
+!((TRUE | FALSE) & (TRUE & FALSE))
+
+y = !((TRUE | FALSE) & (TRUE & FALSE))
+
+TRUE
+10
+10.0
+"female"
+```
+
+## Data structures
+
+```{r}
+# vectors
+?c
+colors <- c("red", "green", "blue")
+# Python, C: colros = ["red", "green", "blue"]
+
+numbers <- c(1, 10, 100)
+log10(numbers)
+c(1:3) + log10(numbers)
+?c
+
+colors[1]
+colors[1:3]
+colors[2:3]
+colors[c(1,3)]
+
+colors[-c(1,3)]
+
+temperatures <- c(17.5, 18, 18.5)
+temperatures[temperatures >= 18]
+
+?mean
+mean(temperatures)
+demeaned <- temperatures - mean(temperatures)
+demeaned
+
+?sd
+sd(temperatures)
+demeaned / sd(temperatures)
+
+# factors
+?factor
+factor(colors)
+
+summary(colors)
+
+colors <- factor(colors)
+colors
+summary(colors)
+
+gender_samples <- factor(c("female", "male", "female", "female"))
+summary(gender_samples)
+```
+
+## Data frames
+
+```{r}
+?read.table
+?read.csv
+
+df <- read.csv("evaluations.csv")
+df
+?head
+head(df)
+tail(df)
+
+str(df)
+names(df)
+summary(df)
+
+df$gender
+df$gender[55]
+
+# factorizing
+df$gender = factor(df$gender)
+summary(df)
+
+
+# filtering
+df$gender == "female"
+head(df)
+head(df[df$gender == "female",])
+head(df[df$gender == "female",1])
+head(df[df$gender == "female",c(1:3)])
+head(df[df$gender == "female" & df$score > 4.7,])
+
+# subsetting
+?subset
+df$gender == "female"
+head(subset(df, df$gender == "female"))
+
+female_df <- subset(df, df$gender == "female")
+male_df <- subset(df, df$gender == "male")
+
+?rbind
+?cbind
+
+rbind(head(female_df, n=3), head(male_df, n=3))
+
+new_df <- rbind(head(female_df, n=3), head(male_df, n=3))
+summary(new_df)
+
+head(cbind(df[,1:2], df[,5:6]))
+```
+
+
+
+
