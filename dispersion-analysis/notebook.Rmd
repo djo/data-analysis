@@ -1,0 +1,96 @@
+---
+title: "Dispersion Analysis"
+output:
+  html_notebook:
+    code_folding: show
+    fig_caption: yes
+    theme: united
+    toc: yes
+---
+
+## Dataset summary
+
+[https://github.com/bioinformatics-core-shared-training/linear-models-r/blob/master/data/amess.csv](https://github.com/bioinformatics-core-shared-training/linear-models-r/blob/master/data/amess.csv)
+
+```{r}
+df = read.csv("amess.csv")
+View(df)
+```
+
+```{r}
+summary(df)
+```
+
+```{r}
+df$treatmnt <- factor(df$treatmnt)
+summary(df)
+```
+
+```{r}
+levels(df$treatmnt)
+```
+
+```{r}
+stripchart(df$folate ~ df$treatmnt, col = c("blue", "green", "black"))
+```
+
+```{r}
+tapply(df$folate, df$treatmnt, mean)
+```
+
+```{r}
+boxplot(df$folate ~ df$treatmnt)
+```
+
+## One-Way ANOVA assumptions
+
+1. Assumption of normality
+2. Assumption of homogeneity of variance
+3. Assumption of independence
+
+```{r}
+shapiro.test(df$folate[df$treatmnt == "1"])
+```
+
+```{r}
+shapiro.test(df$folate[df$treatmnt == "2"])
+```
+
+```{r}
+shapiro.test(df$folate[df$treatmnt == "3"])
+```
+
+```{r}
+bartlett.test(df$folate ~ df$treatmnt)
+```
+
+## Fit an Analysis of Variance Model
+
+```{r}
+summary(aov(df$folate ~ df$treatmnt))
+```
+
+```{r}
+contrasts(df$treatmnt)
+```
+
+```{r}
+summary(lm(df$folate ~ df$treatmnt))
+```
+
+```{r}
+tapply(df$folate, df$treatmnt, mean)
+```
+
+```{r}
+mean(tapply(df$folate, df$treatmnt, mean))
+```
+
+```{r}
+contrasts(df$treatmnt) <- contr.sum
+contrasts(df$treatmnt)
+```
+
+```{r}
+summary(lm(df$folate ~ df$treatmnt))
+```

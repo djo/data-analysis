@@ -8,6 +8,7 @@ Notebooks:
 1. [Descriptive analysis](https://djo.github.io/data-analysis/descriptive-analysis)
 1. [Correlation analysis](https://djo.github.io/data-analysis/correlation-analysis)
 1. [Regression analysis](https://djo.github.io/data-analysis/regression-analysis)
+1. [Dispersion analysis](https://djo.github.io/data-analysis/dispersion-analysis)
 
 MIT License
 
